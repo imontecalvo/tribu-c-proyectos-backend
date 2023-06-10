@@ -35,7 +35,7 @@ def new_projects():
     return response
 
 
-@projects.route('/<int:id>', methods=['PUT'], strict_slashes=False)
+@projects.route('/<int:id>', methods=['PUT'], strict_slashes=False) #.
 def update_project(id):
     projects_service.update_project(id, request.json)
 
