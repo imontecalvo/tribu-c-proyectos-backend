@@ -30,7 +30,7 @@ def get_a_project_data(id):
         response.status_code = 200
     else:
         response = jsonify({"ok":False, "msg": "The project does not exist"})
-        response.status_code = 400
+        response.status_code = 404
     return response
 
 
@@ -62,7 +62,7 @@ def update_project(id):
         response.status_code = 200
     else:
         response = jsonify({"ok":False,"msg":"The project does not exist"})
-        response.status_code = 400
+        response.status_code = 404
     return response
 
 
@@ -73,7 +73,7 @@ def delete_project(id):
         response.status_code = 200
     else:
         response = jsonify({"ok":False,"msg":"The project does not exist"})
-        response.status_code = 400
+        response.status_code = 404
     return response
 
 
