@@ -5,6 +5,7 @@ import datetime as dt
 class Task(db.Model):
     
     id_task = db.Column(db.Integer,primary_key=True)
+    id_project= db.Column(db.Integer,primary_key=True)
     titulo = db.Column(db.String(60))
     descripcion = db.Column(db.String(100))
     tiempo_estimado_finalizacion = db.Column(db.DateTime())
