@@ -1,30 +1,30 @@
-Scenario: 1- Visualización correcta de los campos requeridos para la tarea - get_task_by_id
+Scenario: 1- Visualización correcta de los campos requeridos para la tarea - get_task
 	Given el usuario del módulo del proyecto 
     When accede a un proyecto y selecciona crear una tarea
     Then visualiza un modal con los campos requeridos para completar.
 
-Scenario: 2- Creación exitosa de la tarea - create_task
+Scenario: 2- Creación exitosa de la tarea - add_task
 	Given el usuario del módulo del proyecto 
     When completa todos los campos requeridos de la tarea: id, titulo, descripción, tiempoEstimadoDeFinalizacion, HorasAcumulados, nombreDelResponsable, tickets y Estado y guarda los cambios
     Then se crea la tarea correctamente con estado No iniciada y se visualiza dentro del proyecto.
 
-Scenario: 3- Creación no exitosa de la tarea - create_task
+Scenario: 3- Creación no exitosa de la tarea - add_task
 	Given el usuario del módulo del proyecto 
     When completa todos los campos requeridos de la tarea: id, titulo, descripción, tiempoEstimadoDeFinalizacion, HorasAcumulados y Estado y no guarda los cambios
     Then no se crea la tarea y no se visualiza ningún cambio dentro del proyecto.
 
-Scenario: 4- Edición exitosa de la descripcion de una tarea - edit_task
+Scenario: 4- Edición exitosa de la descripcion de una tarea - update_task
 	Given el usuario del módulo del proyecto quiere editar el titulo de una tarea particular.
     When completa el titulo y guarda la información
     Then se actualiza el titulo de la tarea correctamente.
 
-Scenario: 5- Edición exitosa del estado ‘No iniciada’ a ‘Iniciada’ de una tarea - edit_task
+Scenario: 5- Edición exitosa del estado ‘No iniciada’ a ‘Iniciada’ de una tarea - update_task
 	Given el usuario del módulo del proyecto quiere editar el estado de una tarea particular.
     When selecciona la opción ‘Iniciada’ y guarda la información
     Then se actualiza el estado de la tarea correctamente.
 
 Scenario: 6- Edición exitosa del estado ‘Iniciada’ a ‘Finalizada’ de una tarea.
-	Given el usuario del módulo del proyecto quiere editar el estado de una tarea particular - edit_task
+	Given el usuario del módulo del proyecto quiere editar el estado de una tarea particular - update_task
     When selecciona la opción ‘Finalizada’ y guarda la información
     Then se actualiza el estado de la tarea correctamente.
 
@@ -33,13 +33,13 @@ Scenario: 7- Edición exitosa del estado ‘Finalizada’ a ‘No iniciada’ de
     When selecciona la opción ‘No iniciada’ y guarda la información
     Then se actualiza el estado de la tarea correctamente.
 
-Scenario: 8- Edición exitosa de la descripcion de una tarea - edit_task
+Scenario: 8- Edición exitosa de la descripcion de una tarea - update_task
 	Given el usuario del módulo del proyecto quiere editar la descripcion de una tarea particular.
     When completa la descripcion y guarda la información
     Then se actualiza la descripcion de la tarea correctamente.
 
 
-Scenario: 9- Visualización correcta del detalle de una tarea - get_task_by_id
+Scenario: 9- Visualización correcta del detalle de una tarea - get_task
 	Given el usuario del módulo del proyecto quiere visualizar los detalles de una tarea particular 
     When selecciona dicha tarea
     Then visualiza la siguiente información de la tarea seleccionada: id, titulo, descripción, tiempoEstimadoDeFinalizacion, HorasAcumulados,  nombreDelResponsable, tickets y Estado.
