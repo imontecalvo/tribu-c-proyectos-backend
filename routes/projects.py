@@ -37,14 +37,14 @@ def get_a_project_data(id):
 
 @projects.route("/<int:id>/tasks", methods=["GET"], strict_slashes=False)
 def get_a_project_tasks(id):
+    project = projects_service.get_project(id)
     tasks = task_service.get_all_project_tasks(id)
-    msg = [t.to_dict() for t in tasks]
 
-    if msg:
-        response = jsonify({"ok":True, "msg":msg})
+    if project:
+        response = jsonify({"ok":True, "msg":[t.to_dict() for t in tasks]})
         response.status_code = 200
     else:
-        response = jsonify({"ok":False, "msg": "The project does not exist or does not have tasks"})
+        response = jsonify({"ok":False, "msg": "The project does not exist"})
         response.status_code = 404
     return response
 

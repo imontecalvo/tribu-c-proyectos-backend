@@ -14,7 +14,6 @@ class Task(db.Model):
     responsable = db.Column(db.String(60))
     
     def __init__(self, data):
-        self.id_task = data["id_task"]
         self.id_project = data["id_project"]
         self.titulo = data["titulo"]
         self.descripcion = data["descripcion"]
@@ -24,7 +23,6 @@ class Task(db.Model):
         self.responsable = data["responsable"]
 
     def update_data(self, data):
-        self.id_task = data["id_task"]
         self.id_project = data["id_project"]
         self.titulo = data["titulo"]
         self.descripcion  = data["descripcion"]
