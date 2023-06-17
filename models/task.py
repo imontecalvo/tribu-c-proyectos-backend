@@ -15,17 +15,19 @@ class Task(db.Model):
     
     def __init__(self, data):
         self.id_task = data["id_task"]
-        self.titulo = data["id_producto"]
-        self.descripcion = data["version"]
-        self.ftiempo_estimado_finalizacion = dt.datetime.strptime(data["tiempo_estimado_finalizacion"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        self.id_project = data["id_project"]
+        self.titulo = data["titulo"]
+        self.descripcion = data["descripcion"]
+        self.tiempo_estimado_finalizacion = dt.datetime.strptime(data["tiempo_estimado_finalizacion"], "%Y-%m-%dT%H:%M:%S.%fZ")
         self.horas_acumuladas = data["horas_acumuladas"]
         self.estado = data["estado"]
         self.responsable = data["responsable"]
 
     def update_data(self, data):
         self.id_task = data["id_task"]
+        self.id_project = data["id_project"]
         self.titulo = data["titulo"]
-        self.descripcion  = data["descripcion "]
+        self.descripcion  = data["descripcion"]
         self.tiempo_estimado_finalizacion = dt.datetime.strptime(data["tiempo_estimado_finalizacion"], "%Y-%m-%dT%H:%M:%S.%fZ")
         self.horas_acumuladas = data["horas_acumuladas"]
         self.estado = data["estado"]

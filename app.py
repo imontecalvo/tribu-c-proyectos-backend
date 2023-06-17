@@ -1,5 +1,6 @@
 from flask import Flask
 from routes.projects import projects
+from routes.tasks import tasks
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
@@ -15,3 +16,4 @@ app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.register_blueprint(projects)
+app.register_blueprint(tasks)

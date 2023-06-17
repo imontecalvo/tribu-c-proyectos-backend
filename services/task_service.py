@@ -8,6 +8,9 @@ def add_task(task):
 def get_all_tasks():
     return Task.query.all()
 
+def get_all_project_tasks(project_id):
+    return Task.query.filter_by(id_project = project_id)
+
 def get_task(id):
     return Task.query.get(id)
 
