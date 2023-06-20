@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from models.task import Task
 from services import task_service
+from services import projects_service
+from routes.projects import projects
 
 tasks = Blueprint("tasks", __name__, url_prefix="/tasks")
 
@@ -114,3 +116,16 @@ def check_fields_update_task(data):
         response.status_code = 400
         return response
     return None
+
+@projects.route("/<int:id>/tasks", methods=["GET"], strict_slashes=False)
+def get_tasks_from_project(id):
+    project = projects_service.get_project(id)
+
+    if project:
+        tasks = task_service.get_all_project_tasks(id)
+        response = jsonify({"ok":True, "msg":[t.to_dict() for t in tasks]})
+        response.status_code = 200
+    else:
+        response = jsonify({"ok":False, "msg": "The project does not exist"})
+        response.status_code = 404
+    return response
