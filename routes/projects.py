@@ -19,19 +19,20 @@ def after_request(response):
 def get_projects_data():
     all_projects = projects_service.get_all_projects()
 
-    response = jsonify({"ok":True, "msg":[i.to_dict() for i in all_projects]})
+    response = jsonify({"ok": True, "msg": [i.to_dict() for i in all_projects]})
     response.status_code = 200
     return response
+
 
 @projects.route("/<int:id>", methods=["GET"], strict_slashes=False)
 def get_a_project_data(id):
     project = projects_service.get_project(id)
 
     if project:
-        response = jsonify({"ok":True, "msg":project.to_dict()})
+        response = jsonify({"ok": True, "msg": project.to_dict()})
         response.status_code = 200
     else:
-        response = jsonify({"ok":False, "msg": "The project does not exist"})
+        response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
     return response
 
@@ -42,68 +43,90 @@ def new_projects():
     res = check_fields_new_project(data)
     if res:
         return res
-    
+
     project = Project(data)
     projects_service.add_project(project)
 
-    response = jsonify({"ok":True, "msg": project.to_dict()})
+    response = jsonify({"ok": True, "msg": project.to_dict()})
     response.status_code = 201
     return response
 
 
-@projects.route('/<int:id>', methods=['PUT'], strict_slashes=False) #.
+@projects.route("/<int:id>", methods=["PUT"], strict_slashes=False)  # .
 def update_project(id):
     data = request.json
     res = check_fields_update_project(data)
     if res:
         return res
-    
+
     project = projects_service.update_project(id, data)
     if project:
-        response = jsonify({"ok":True,"msg":project.to_dict()})
+        response = jsonify({"ok": True, "msg": project.to_dict()})
         response.status_code = 200
     else:
-        response = jsonify({"ok":False,"msg":"The project does not exist"})
+        response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
     return response
 
 
-@projects.route('/<int:id>', methods=['DELETE'], strict_slashes=False)
+@projects.route("/<int:id>", methods=["DELETE"], strict_slashes=False)
 def delete_project(id):
     if projects_service.delete_project(id):
-        response = jsonify({"ok":True,"msg":"The project has been deleted successfully"})
+        response = jsonify(
+            {"ok": True, "msg": "The project has been deleted successfully"}
+        )
         response.status_code = 200
     else:
-        response = jsonify({"ok":False,"msg":"The project does not exist"})
+        response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
     return response
 
 
 def check_fields_new_project(data):
-    fields = [ "id_cliente", "id_producto", "version", "customizacion", "nombre", "fecha_fin_estimada", "costo_estimado",]
+    fields = [
+        "id_cliente",
+        "id_producto",
+        "version",
+        "customizacion",
+        "nombre",
+        "fecha_fin_estimada",
+        "costo_estimado",
+    ]
 
     for field in fields:
         if not field in list(data.keys()):
             response = jsonify({"ok": False, "msg": f"Field {field} is missing"})
             response.status_code = 400
             return response
-        
+
     if data["costo_estimado"] < 0:
-        response = jsonify({"ok": False, "msg": "costo_estimado must be a positive number"})
+        response = jsonify(
+            {"ok": False, "msg": "costo_estimado must be a positive number"}
+        )
         response.status_code = 400
         return response
     return None
 
 
 def check_fields_update_project(data):
-    fields = [ "id_cliente", "id_producto", "version", "customizacion", "nombre", "fecha_fin_estimada", "estado", "horas_consumidas", "costo_estimado"]
+    fields = [
+        "id_cliente",
+        "id_producto",
+        "version",
+        "customizacion",
+        "nombre",
+        "fecha_fin_estimada",
+        "estado",
+        "horas_consumidas",
+        "costo_estimado",
+    ]
 
     for field in fields:
         if not field in list(data.keys()):
             response = jsonify({"ok": False, "msg": f"Field {field} is missing"})
             response.status_code = 400
             return response
-    
+
     err_msg = ""
     if data["costo_estimado"] < 0:
         err_msg = "costo_estimado must be a positive number"
@@ -111,7 +134,7 @@ def check_fields_update_project(data):
         err_msg = "horas_consumidas must be a positive number"
     if data["estado"] != "iniciado" and data["estado"] != "finalizado":
         err_msg = "estado is invalid"
-    
+
     if err_msg != "":
         response = jsonify({"ok": False, "msg": err_msg})
         response.status_code = 400

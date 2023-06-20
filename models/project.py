@@ -21,7 +21,9 @@ class Project(db.Model):
         self.version = data["version"]
         self.customizacion = data["customizacion"]
         self.nombre = data["nombre"]
-        self.fecha_fin_estimada = dt.datetime.strptime(data["fecha_fin_estimada"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        self.fecha_fin_estimada = dt.datetime.strptime(
+            data["fecha_fin_estimada"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
         self.costo_estimado = data["costo_estimado"]
 
     def update_data(self, data):
@@ -30,21 +32,25 @@ class Project(db.Model):
         self.version = data["version"]
         self.customizacion = data["customizacion"]
         self.nombre = data["nombre"]
-        self.fecha_fin_estimada = dt.datetime.strptime(data["fecha_fin_estimada"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        self.fecha_fin_estimada = dt.datetime.strptime(
+            data["fecha_fin_estimada"], "%Y-%m-%dT%H:%M:%S.%fZ"
+        )
         self.estado = data["estado"]
         self.horas_consumidas = data["horas_consumidas"]
         self.costo_estimado = data["costo_estimado"]
 
     def to_dict(self):
         return {
-            "codigo":self.codigo,
+            "codigo": self.codigo,
             "id_cliente": self.id_cliente,
             "id_producto": self.id_producto,
             "version": self.version,
             "customizacion": self.customizacion,
             "nombre": self.nombre,
-            "fecha_inicio": self.fecha_inicio.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
-            "fecha_fin_estimada": self.fecha_fin_estimada.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            "fecha_inicio": self.fecha_inicio.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+            "fecha_fin_estimada": self.fecha_fin_estimada.strftime(
+                "%Y-%m-%dT%H:%M:%S.%fZ"
+            ),
             "estado": self.estado,
             "horas_consumidas": self.horas_consumidas,
             "costo_estimado": self.costo_estimado,
