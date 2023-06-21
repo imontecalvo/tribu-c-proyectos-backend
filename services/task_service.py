@@ -12,7 +12,7 @@ def get_all_tasks():
 
 
 def get_all_project_tasks(project_id):
-    return Task.query.filter_by(id_project=project_id)
+    return Task.query.filter_by(id_proyecto=project_id)
 
 
 def get_task(id_task, id_project):

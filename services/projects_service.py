@@ -36,5 +36,13 @@ def update_project(id, data):
 def project_exists(id):
     project = Project.query.get(id)
     if project:
-        return True
+        return project
+    return False
+
+def update_last_task(id):
+    project = Project.query.get(id)
+    if project:
+        project.ultima_tarea += 1
+        db.session.commit()
+        return project
     return False

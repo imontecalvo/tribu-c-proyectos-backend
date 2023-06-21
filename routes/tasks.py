@@ -43,13 +43,15 @@ def new_task(id_project):
     if res:
         return res
 
-    if not projects_service.project_exists(id_project):
+    project = projects_service.project_exists(id_project)
+    if not project:
         response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
         return response
 
-    task = Task(data)
+    task = Task(data, project)
     task_service.add_task(task)
+    projects_service.update_last_task(id_project)
 
     response = jsonify({"ok": True, "msg": task.to_dict()})
     response.status_code = 201
@@ -113,13 +115,9 @@ def get_tasks_from_project(id):
 
 def check_fields_new_task(data):
     fields = [
-        "id_task",
-        "id_project",
         "titulo",
         "descripcion",
         "tiempo_estimado_finalizacion",
-        "horas_acumuladas",
-        "estado",
         "responsable",
     ]
 
@@ -129,19 +127,13 @@ def check_fields_new_task(data):
             response.status_code = 400
             return response
 
-    if data["horas_acumuladas"] < 0:
-        response = jsonify(
-            {"ok": False, "msg": "horas_acumuladas must be a positive number"}
-        )
-        response.status_code = 400
-        return response
     return None
 
 
 def check_fields_update_task(data):
     fields = [
-        "id_task",
-        "id_project",
+        "id_tarea",
+        "id_proyecto",
         "titulo",
         "descripcion",
         "tiempo_estimado_finalizacion",

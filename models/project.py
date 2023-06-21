@@ -14,6 +14,7 @@ class Project(db.Model):
     estado = db.Column(db.String(20), default="iniciado")
     horas_consumidas = db.Column(db.Integer, default=0)
     costo_estimado = db.Column(db.Integer)
+    ultima_tarea = db.Column(db.Integer, default=0)
 
     def __init__(self, data):
         self.id_cliente = data["id_cliente"]
@@ -54,4 +55,5 @@ class Project(db.Model):
             "estado": self.estado,
             "horas_consumidas": self.horas_consumidas,
             "costo_estimado": self.costo_estimado,
+            "ultima_tarea":self.ultima_tarea
         }
