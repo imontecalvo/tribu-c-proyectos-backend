@@ -9,7 +9,7 @@ class Task(db.Model):
     descripcion = db.Column(db.String(100))
     tiempo_estimado_finalizacion = db.Column(db.DateTime())
     horas_acumuladas = db.Column(db.Integer, default=0)
-    estado = db.Column(db.String(20), default="no iniciada")
+    estado = db.Column(db.Integer, default=0)
     responsable = db.Column(db.String(60))
 
     def __init__(self, data, project):

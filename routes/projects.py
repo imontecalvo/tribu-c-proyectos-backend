@@ -132,7 +132,7 @@ def check_fields_update_project(data):
         err_msg = "costo_estimado must be a positive number"
     if data["horas_consumidas"] < 0:
         err_msg = "horas_consumidas must be a positive number"
-    if data["estado"] != "iniciado" and data["estado"] != "finalizado":
+    if data["estado"] < 0 or data["estado"] > 2:
         err_msg = "estado is invalid"
 
     if err_msg != "":

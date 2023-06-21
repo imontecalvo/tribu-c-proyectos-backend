@@ -11,7 +11,7 @@ class Project(db.Model):
     nombre = db.Column(db.String(60))
     fecha_inicio = db.Column(db.DateTime(), default=dt.datetime.now())
     fecha_fin_estimada = db.Column(db.DateTime())
-    estado = db.Column(db.String(20), default="iniciado")
+    estado = db.Column(db.Integer, default=1)
     horas_consumidas = db.Column(db.Integer, default=0)
     costo_estimado = db.Column(db.Integer)
     ultima_tarea = db.Column(db.Integer, default=0)

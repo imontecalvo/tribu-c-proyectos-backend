@@ -153,11 +153,7 @@ def check_fields_update_task(data):
     if data["horas_acumuladas"] < 0:
         err_msg = "horas_acumuladas must be a positive number"
 
-    if (
-        data["estado"] != "no iniciada"
-        and data["estado"] != "iniciada"
-        and data["estado"] != "finalizada"
-    ):
+    if (data["estado"] < 0 or data["estado"] > 2):
         err_msg = "estado is invalid"
 
     if err_msg != "":
