@@ -89,7 +89,6 @@ def check_fields_new_project(data):
         "version",
         "customizacion",
         "nombre",
-        "fecha_fin_estimada",
         "costo_estimado",
     ]
 
@@ -115,7 +114,6 @@ def check_fields_update_project(data):
         "version",
         "customizacion",
         "nombre",
-        "fecha_fin_estimada",
         "estado",
         "horas_consumidas",
         "costo_estimado",
