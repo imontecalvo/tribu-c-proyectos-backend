@@ -118,7 +118,7 @@ def check_fields_new_task(data):
         "titulo",
         "descripcion",
         "tiempo_estimado_finalizacion",
-        "responsable",
+        "legajo_responsable",
     ]
 
     for field in fields:
@@ -132,14 +132,12 @@ def check_fields_new_task(data):
 
 def check_fields_update_task(data):
     fields = [
-        "id_tarea",
-        "id_proyecto",
         "titulo",
         "descripcion",
         "tiempo_estimado_finalizacion",
         "horas_acumuladas",
         "estado",
-        "responsable",
+        "legajo_responsable",
     ]
 
     for field in fields:
