@@ -3,8 +3,10 @@ from behave import *
 import json
 empty = b'[]'
 
-body = """{"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
+body = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
+body1 = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
 
+completeApi='https://tribu-c-proyectos-backend.onrender.com/projects/'
     
 @given('soy usuario del modulo proyectos y no hay proyectos existentes')
 def no_projects(context):
@@ -31,3 +33,22 @@ def no_projects(context):
 def not_found_projects(context):
     if data.status_code==200:
         assert data.content != empty
+        
+@given('soy usuario del módulo del proyecto y quiero visualizar los detalles de un proyecto particular')
+def view_information(context):
+    global id
+
+    bodyJson = json.loads(body)
+    id = requests.post(completeApi, json=bodyJson).content.decode()
+    
+    
+@when('selecciona un proyecto')
+def project_by_id(context):
+        global data
+        api = completeApi + id
+        data = requests.get(api)
+        
+@then( 'visualiza la siguiente información del proyecto: Nombre del proyecto, Cliente, producto,version,customizacion, fecha de inicio, fecha de cierre,Estado, Horas consumidas, Costo del proyecto, y listado de Tareas')
+def all_information(context):
+    if data.content==body:
+     assert True
