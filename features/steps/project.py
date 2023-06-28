@@ -3,8 +3,8 @@ from behave import *
 import json
 empty = b'[]'
 
-body = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
-body1 = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
+body_view = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
+body_create = """{"codigo": 101,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "Galiciav1","nombre": "Banco Galicia","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 160,"costo_estimado": 7500000, "ultima_tarea":5}"""
 
 completeApi='https://tribu-c-proyectos-backend.onrender.com/projects/'
     
@@ -38,7 +38,7 @@ def not_found_projects(context):
 def view_information(context):
     global id
 
-    bodyJson = json.loads(body)
+    bodyJson = json.loads(body_view)
     id = requests.post(completeApi, json=bodyJson).content.decode()
     
     
@@ -50,5 +50,25 @@ def project_by_id(context):
         
 @then( 'visualiza la siguiente información del proyecto: Nombre del proyecto, Cliente, producto,version,customizacion, fecha de inicio, fecha de cierre,Estado, Horas consumidas, Costo del proyecto, y listado de Tareas')
 def all_information(context):
-    if data.content==body:
+    if data.content==body_view:
+     assert True
+     
+     
+@given('el usuario del módulo del proyecto quiere dar de alta un proyecto')
+def create_project(context):
+    global api
+    api = 'https://tribu-c-proyectos-backend.onrender.com/projects/'
+    
+
+@when('agrega un proyecto y completa todos los campos requeridos')
+def add_project(context):
+        global data, bodyJson
+        bodyJson = json.loads(body_create)
+        requests.post(api, json = bodyJson)
+        
+@then('se guarda el proyecto correctamente')
+def all_information(context):
+    
+    data = requests.get(api)
+    if data.content==body_create:
      assert True

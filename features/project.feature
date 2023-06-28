@@ -14,9 +14,15 @@ Scenario: 3- Visualización correcta del detalle de un proyecto - get_project
     When selecciona un proyecto 
     Then visualiza la siguiente información del proyecto: Nombre del proyecto, Cliente, producto,version,customizacion, fecha de inicio, fecha de cierre,Estado, Horas consumidas, Costo del proyecto, y listado de Tareas
 
+Scenario: 4- Creacion de proyecto exitosa - add_project
+    Given el usuario del módulo del proyecto quiere dar de alta un proyecto
+    When agrega un proyecto y completa todos los campos requeridos
+    Then se guarda el proyecto correctamente
 
-
-
+Scenario: 5- Creacion de proyecto no exitosa - add_project
+    Given el usuario del módulo del proyecto quiere dar de alta un proyecto
+    When agrega un proyecto y no completa todos los campos requeridos
+    Then no puede guardar el proyecto
 
 
 
