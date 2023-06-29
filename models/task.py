@@ -9,7 +9,7 @@ class Task(db.Model):
     descripcion = db.Column(db.String(100))
     tiempo_estimado_finalizacion = db.Column(db.Integer)
     horas_acumuladas = db.Column(db.Integer, default=0)
-    estado = db.Column(db.Integer, default=0)
+    estado = db.Column(db.Integer)
     legajo_responsable = db.Column(db.Integer)
 
     def __init__(self, data, project):
@@ -19,6 +19,10 @@ class Task(db.Model):
         self.descripcion = data["descripcion"]
         self.tiempo_estimado_finalizacion = data["tiempo_estimado_finalizacion"]
         self.legajo_responsable = data["legajo_responsable"]
+        if "estado" in list(data.keys()) and data["estado"]:
+            self.estado = data["estado"]
+        else:
+            self.estado = 0
 
     def update_data(self, data):
         self.titulo = data["titulo"]
