@@ -6,6 +6,9 @@ empty = b'[]'
 body_view = """{"codigo": 100,"id_cliente": 100,"id_producto": 100,"version": "1.0","customizacion": "Tenarisv1","nombre": "Tenaris","fecha_inicio": "21/06/2023", "fecha_fin_estimada": "21/06/2021","estado": 1,"horas_consumidas": 60,"costo_estimado": 1000, "ultima_tarea":1}"""
 body_create = """{"codigo": 101,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "Galiciav1","nombre": "Banco Galicia","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 160,"costo_estimado": 7500000, "ultima_tarea":5}"""
 
+body_incomplete_create = """{"codigo": null,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "Galiciav1","nombre": "Banco Galicia","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 160,"costo_estimado": 7500000, "ultima_tarea":5}"""
+
+
 completeApi='https://tribu-c-proyectos-backend.onrender.com/projects/'
     
 @given('soy usuario del modulo proyectos y no hay proyectos existentes')
@@ -72,3 +75,30 @@ def all_information(context):
     data = requests.get(api)
     if data.content==body_create:
      assert True
+
+    
+
+@when('agrega un proyecto y no completa todos los campos requeridos')
+def add_project(context):
+        global data, bodyJson
+        bodyJson = json.loads(body_incomplete_create)
+        requests.post(api, json = bodyJson)
+        
+@then('no puede guardar el proyecto')
+def all_information(context):
+    
+    data = requests.get(api)
+    if data.content[1] is None:
+       assert True
+       
+       
+@given('el usuario del módulo del proyecto quiere editar el nombre de un proyecto')
+def edit_project(context):
+   
+    
+
+@when('edita el campo nombre del proyecto y guarda la información')
+def edit_project(context):
+      
+        
+@then('se actualiza el nombre del proyecto correctamente visualizandose el nuevo nombre')

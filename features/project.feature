@@ -25,7 +25,10 @@ Scenario: 5- Creacion de proyecto no exitosa - add_project
     Then no puede guardar el proyecto
 
 
-
+Scenario: 6- Edición exitosa del nombre de un proyecto - update_project
+	Given el usuario del módulo del proyecto quiere editar el nombre de un proyecto
+    When edita el campo nombre del proyecto y guarda la información
+    Then se actualiza el nombre del proyecto correctamente visualizandose el nuevo nombre
 
 
 
