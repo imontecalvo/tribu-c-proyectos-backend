@@ -28,6 +28,7 @@ class Project(db.Model):
             self.fecha_fin_estimada = dt.datetime.strptime(
                 data["fecha_fin_estimada"], "%Y-%m-%dT%H:%M:%S.%fZ"
             )
+        self.fecha_inicio = dt.datetime.strptime(data["fecha_inicio"], "%Y-%m-%dT%H:%M:%S.%fZ")
 
     def update_data(self, data):
         # self.id_cliente = data["id_cliente"]
