@@ -90,6 +90,8 @@ def check_fields_new_project(data):
         "customizacion",
         "nombre",
         "costo_estimado",
+        "estado",
+        "fecha_inicio"
     ]
 
     for field in fields:
@@ -109,10 +111,10 @@ def check_fields_new_project(data):
 
 def check_fields_update_project(data):
     fields = [
-        "id_cliente",
-        "id_producto",
-        "version",
-        "customizacion",
+        # "id_cliente",
+        # "id_producto",
+        # "version",
+        # "customizacion",
         "nombre",
         "estado",
         "horas_consumidas",
