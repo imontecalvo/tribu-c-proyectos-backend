@@ -11,6 +11,8 @@ body_incomplete_create = """{"codigo": null,"id_cliente": 101,"id_producto": 101
 body_edit = """{"codigo": 101,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "Galiciav1","nombre": "Banco Galicia","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 160,"costo_estimado": 7500000, "ultima_tarea":5}"""
 body_edited = """{"codigo": 101,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "HSBCv1","nombre": "Banco HSBC","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 160,"costo_estimado": 7500000, "ultima_tarea":5}"""
 
+body_delete = """{"codigo": 101,"id_cliente": 101,"id_producto": 101,"version": "1.0","customizacion": "HSBCv1","nombre": "Banco HSBC","fecha_inicio": "30/06/2023", "fecha_fin_estimada": "20/12/2023","estado": 1,"horas_consumidas": 150,"costo_estimado": 7500000, "ultima_tarea":20}"""
+
 completeApi='https://tribu-c-proyectos-backend.onrender.com/projects/'
     
 @given('soy usuario del modulo proyectos y no hay proyectos existentes')
@@ -112,3 +114,24 @@ def save_project(context):
         assert True
     if data.content==body_edit:
         assert False
+        
+        
+@given('el usuario del módulo del proyecto quiere eliminar un proyecto')
+def delete_project(context):
+    global id
+    bodyJson = json.loads(body_delete)
+    id = requests.post(completeApi, json=bodyJson).content.decode()
+    
+
+@when('selecciona eliminar el proyecto y acepta la confirmación de eliminación')
+def delete_project(context):
+    global data,url
+    url = completeApi + id
+    data = requests.delete(url)
+ 
+        
+@then('se elimina el proyecto correctamente')
+def delete_project(context):
+    data = requests.get(url)
+    
+    assert not (data.content==body_delete)

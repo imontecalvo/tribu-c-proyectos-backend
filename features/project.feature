@@ -31,7 +31,10 @@ Scenario: 6- Edición exitosa del nombre de un proyecto - update_project
     Then se actualiza el nombre del proyecto correctamente visualizandose el nuevo nombre
 
 
-
+Scenario: 7- Eliminación exitosa de un proyecto - delete_project
+    Given el usuario del módulo del proyecto quiere eliminar un proyecto
+    When selecciona eliminar el proyecto y acepta la confirmación de eliminación
+    Then se elimina el proyecto correctamente
 
 
 
