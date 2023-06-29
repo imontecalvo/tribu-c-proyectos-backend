@@ -32,12 +32,12 @@ def not_found_projects(context):
         assert data.content == empty
         
 @given('soy usuario del modulo proyectos y hay proyectos existentes')
-def no_projects(context):
+def all_projects(context):
     global url
     url = 'https://tribu-c-proyectos-backend.onrender.com/'
     
 @then('el sistema carga un listado de todos los proyectos de PSA con los campos: Nombre del proyecto, Cliente, producto,version,customizacion, fecha de inicio, fecha de cierre,Estado, Horas consumidas, Costo del proyecto, y listado de Tareas')
-def not_found_projects(context):
+def found_projects(context):
     if data.status_code==200:
         assert data.content != empty
         
