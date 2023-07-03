@@ -1,8 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models.project import Project
-from models.task import Task
 from services import projects_service
-from services import task_service
 
 projects = Blueprint("projects", __name__, url_prefix="/projects")
 
@@ -24,9 +22,9 @@ def get_projects_data():
     return response
 
 
-@projects.route("/<int:id>", methods=["GET"], strict_slashes=False)
-def get_a_project_data(id):
-    project = projects_service.get_project(id)
+@projects.route("/<int:project_id>", methods=["GET"], strict_slashes=False)
+def get_a_project_data(project_id):
+    project = projects_service.get_project(project_id)
 
     if project:
         response = jsonify({"ok": True, "msg": project.to_dict()})
@@ -52,14 +50,14 @@ def new_projects():
     return response
 
 
-@projects.route("/<int:id>", methods=["PUT"], strict_slashes=False)  # .
-def update_project(id):
+@projects.route("/<int:project_id>", methods=["PUT"], strict_slashes=False)
+def update_project(project_id):
     data = request.json
     res = check_fields_update_project(data)
     if res:
         return res
 
-    project = projects_service.update_project(id, data)
+    project = projects_service.update_project(project_id, data)
     if project:
         response = jsonify({"ok": True, "msg": project.to_dict()})
         response.status_code = 200
@@ -69,9 +67,9 @@ def update_project(id):
     return response
 
 
-@projects.route("/<int:id>", methods=["DELETE"], strict_slashes=False)
-def delete_project(id):
-    if projects_service.delete_project(id):
+@projects.route("/<int:project_id>", methods=["DELETE"], strict_slashes=False)
+def delete_project(project_id):
+    if projects_service.delete_project(project_id):
         response = jsonify(
             {"ok": True, "msg": "The project has been deleted successfully"}
         )
@@ -91,7 +89,7 @@ def check_fields_new_project(data):
         "nombre",
         "costo_estimado",
         "estado",
-        "fecha_inicio"
+        "fecha_inicio",
     ]
 
     for field in fields:
