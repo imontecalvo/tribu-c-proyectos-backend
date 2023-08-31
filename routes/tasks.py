@@ -16,15 +16,15 @@ def after_request(response):
 
 
 @projects.route(
-    "/<int:id_project>/tasks/<int:id_task>", methods=["GET"], strict_slashes=False
+    "/<int:project_id>/tasks/<int:task_id>", methods=["GET"], strict_slashes=False
 )
-def get_a_task_data(id_project, id_task):
-    if not projects_service.project_exists(id_project):
+def get_a_task_data(project_id, task_id):
+    if not projects_service.project_exists(project_id):
         response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
         return response
 
-    task = task_service.get_task(id_task, id_project)
+    task = task_service.get_task(task_id, project_id)
 
     if task:
         response = jsonify({"ok": True, "msg": task.to_dict()})
@@ -35,15 +35,14 @@ def get_a_task_data(id_project, id_task):
     return response
 
 
-@projects.route("/<int:id_project>/tasks/", methods=["POST"], strict_slashes=False)
-def new_task(id_project):
-    # Chequeamos que los campos de la request sean correctos
+@projects.route("/<int:project_id>/tasks/", methods=["POST"], strict_slashes=False)
+def new_task(project_id):
     data = request.json
     res = check_fields_new_task(data)
     if res:
         return res
 
-    project = projects_service.project_exists(id_project)
+    project = projects_service.project_exists(project_id)
     if not project:
         response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
@@ -51,7 +50,7 @@ def new_task(id_project):
 
     task = Task(data, project)
     task_service.add_task(task)
-    projects_service.update_last_task(id_project)
+    projects_service.update_last_task(project_id)
 
     response = jsonify({"ok": True, "msg": task.to_dict()})
     response.status_code = 201
@@ -59,21 +58,20 @@ def new_task(id_project):
 
 
 @projects.route(
-    "/<int:id_project>/tasks/<int:id_task>", methods=["PUT"], strict_slashes=False
+    "/<int:project_id>/tasks/<int:task_id>", methods=["PUT"], strict_slashes=False
 )
-def update_task(id_project, id_task):
-    # Chequeamos que los campos de la request sean correctos
+def update_task(project_id, task_id):
     data = request.json
     res = check_fields_update_task(data)
     if res:
         return res
 
-    if not projects_service.project_exists(id_project):
+    if not projects_service.project_exists(project_id):
         response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
         return response
 
-    task = task_service.update_task(id_task, id_project, data)
+    task = task_service.update_task(task_id, project_id, data)
     if task:
         response = jsonify({"ok": True, "msg": task.to_dict()})
         response.status_code = 200
@@ -84,13 +82,13 @@ def update_task(id_project, id_task):
 
 
 @projects.route(
-    "/<int:id_project>/tasks/<int:id_task>", methods=["DELETE"], strict_slashes=False
+    "/<int:project_id>/tasks/<int:task_id>", methods=["DELETE"], strict_slashes=False
 )
-def delete_task(id_project, id_task):
-    if not projects_service.project_exists(id_project):
+def delete_task(project_id, task_id):
+    if not projects_service.project_exists(project_id):
         response = jsonify({"ok": False, "msg": "The project does not exist"})
         response.status_code = 404
-    elif task_service.delete_task(id_task, id_project):
+    elif task_service.delete_task(task_id, project_id):
         response = jsonify(
             {"ok": True, "msg": "The task has been deleted successfully"}
         )
@@ -101,10 +99,10 @@ def delete_task(id_project, id_task):
     return response
 
 
-@projects.route("/<int:id>/tasks", methods=["GET"], strict_slashes=False)
-def get_tasks_from_project(id):
-    if projects_service.project_exists(id):
-        tasks = task_service.get_all_project_tasks(id)
+@projects.route("/<int:project_id>/tasks", methods=["GET"], strict_slashes=False)
+def get_tasks_from_project(project_id):
+    if projects_service.project_exists(project_id):
+        tasks = task_service.get_all_project_tasks(project_id)
         response = jsonify({"ok": True, "msg": [t.to_dict() for t in tasks]})
         response.status_code = 200
     else:
@@ -151,7 +149,7 @@ def check_fields_update_task(data):
     if data["horas_acumuladas"] < 0:
         err_msg = "horas_acumuladas must be a positive number"
 
-    if (data["estado"] < 0 or data["estado"] > 2):
+    if data["estado"] < 0 or data["estado"] > 2:
         err_msg = "estado is invalid"
 
     if err_msg != "":

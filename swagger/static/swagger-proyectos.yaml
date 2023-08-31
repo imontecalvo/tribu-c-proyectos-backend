@@ -1,0 +1,581 @@
+openapi: 3.0.2
+info:
+  title: Proyectos Backend - Tribu C
+  description: |-
+    Esta es la especificación de la API del Backend del módulo Proyectos de la Tribu C para el TPG de 9520.MeMoI-7509.AnInfo 1C2023 
+  version: 1.0
+servers:
+  - url: https://tribu-c-proyectos-backend.onrender.com/
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        msg:
+          type: string
+          default: A message describing the error
+        ok:
+          type: boolean
+          default: false
+    SuccessMessage:
+      type: object
+      properties:
+        msg:
+          type: string
+          default: A message describing success
+        ok:
+          type: boolean
+          default: true
+    Project:
+      type: object
+      properties:
+        nombre:
+          type: string
+        fecha_inicio:
+          type: string
+          format: date-time
+        customizacion:
+          type: string
+        version:
+          type: string
+        id_cliente:
+          type: integer
+        id_producto:
+          type: integer
+        estado:
+          type: integer
+        costo_estimado:
+          type: integer
+        id_proyecto:
+          type: integer
+        horas_consumidas:
+          type: integer
+        ultima_tarea:
+          type: integer
+        fecha_fin_estimada:
+          type: string
+          format: date-time
+    ProjectResponse:
+      type: object
+      properties:
+        msg:
+          $ref: '#/components/schemas/Project'
+        ok:
+          type: boolean
+    PutProjectRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+        customizacion:
+          type: string
+        version:
+          type: string
+        id_cliente:
+          type: integer
+        id_producto:
+          type: integer
+        estado:
+          type: integer
+        costo_estimado:
+          type: integer
+        horas_consumidas:
+          type: integer
+        fecha_fin_estimada:
+          type: string
+          format: date-time
+    PostProjectRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+        customizacion:
+          type: string
+        version:
+          type: string
+        id_cliente:
+          type: integer
+        id_producto:
+          type: integer
+        costo_estimado:
+          type: integer
+        fecha_fin_estimada:
+          type: string
+          format: date-time
+    Task:
+      type: object
+      properties:
+        titulo:
+          type: string
+        id_tarea:
+          type: integer
+        estado:
+          type: integer
+        id_proyecto:
+          type: integer
+        tiempo_estimado_finalizacion:
+          type: integer
+        descripcion:
+          type: string
+        horas_acumuladas:
+          type: integer
+        legajo_responsable:
+          type: integer
+    TaskResponse:
+      type: object
+      properties:
+        msg:
+          $ref: '#/components/schemas/Task'
+        ok:
+          type: boolean
+    PutTaskRequest:
+      type: object
+      properties:
+        titulo:
+          type: string
+        estado:
+          type: integer
+        tiempo_estimado_finalizacion:
+          type: integer
+        descripcion:
+          type: string
+        horas_acumuladas:
+          type: integer
+        legajo_responsable:
+          type: integer
+    PostTaskRequest:
+      type: object
+      properties:
+        tiempo_estimado_finalizacion:
+          type: integer
+        legajo_responsable:
+          type: integer
+        titulo:
+          type: string
+        descripcion:
+          type: string
+paths:
+  /projects:
+    get:
+      tags:
+        - projects
+      summary: Get all projects
+      description: Returns all the projects saved
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'          
+    post:
+      tags:
+        - projects
+      summary: Add a new project
+      description: Creates a new project and returns it
+      requestBody:
+        description: Creates a new project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostProjectRequest'
+        required: true
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'          
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                fields_missing:
+                  summary: One or more fields are missing
+                  value:
+                    msg: Field {field} is missing
+                    ok: false
+                costo_estimado:
+                  summary: The field costo_estimado must be a positive number
+                  value:
+                    msg: costo_estimado must be a positive number
+                    ok: false
+  /projects/{project_id}:
+    get:
+      tags:
+        - projects
+      summary: Get a project
+      description: Returns a single project by its ID
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project to return
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+    put:
+      tags:
+        - projects
+      summary: Updates a project
+      description: Updates an existing project by ID and returns it
+      requestBody:
+        description: Updates an existing project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutProjectRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                fields_missing:
+                  summary: One or more fields are missing
+                  value:
+                    msg: Field {field} is missing
+                    ok: false
+                costo_estimado:
+                  summary: The field costo_estimado must be a positive number
+                  value:
+                    msg: costo_estimado must be a positive number
+                    ok: false
+                horas_consumidas:
+                  summary: The field horas_consumidas must be a positive number
+                  value:
+                    msg: horas_consumidas must be a positive number
+                    ok: false
+                estado:
+                  summary: The field estado is invalid
+                  value:
+                    msg: estado is invalid
+                    ok: false
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+    delete:
+      tags:
+        - projects
+      summary: Delete a specified project
+      description: Deletes an existing project by its ID
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project to delete
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/SuccessMessage'
+                examples:
+                  project_deleted:
+                    summary: A message stating the deletion was successful
+                    value:
+                      msg: The project has been deleted successfully
+                      ok: true
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+  /projects/{project_id}/tasks:
+    get:
+      tags:
+        - tasks
+      summary: Get the tasks from a project
+      description: Returns all the tasks from a single project by its ID
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project from wich to return all tasks
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+    post:
+      tags:
+        - tasks
+      summary: Post a new task in a specified project
+      description: Creates a new task in a specified project and returns it
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project in wich to create the task
+          required: true
+          schema:
+            type: integer
+            format: int
+      requestBody:
+        description: Creates a new task
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTaskRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                fields_missing:
+                  summary: One or more fields are missing
+                  value:
+                    msg: Field {field} is missing
+                    ok: false
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+  /projects/{project_id}/tasks/{task_id}:
+    get:
+      tags:
+        - tasks
+      summary: Get a task from a project
+      description: Returns a single task by its ID from a single project by its ID
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project from wich to return
+          required: true
+          schema:
+            type: integer
+            format: int
+        - name: task_id
+          in: path
+          description: ID of the task to return
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+                project_missing:
+                  summary: Task does not exist
+                  value:
+                    msg: The task does not exist
+                    ok: false
+    put:
+        tags:
+          - tasks
+        summary: Updates a task in a project
+        description: Updates an existing task by its ID and returns it
+        requestBody:
+          description: Updates an existing task
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutProjectRequest'
+          required: true
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TaskResponse'
+          '400':
+            description: BAD REQUEST
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorMessage'
+                  $ref: '#/components/schemas/ErrorMessage'
+                  $ref: '#/components/schemas/ErrorMessage'
+                examples:
+                  fields_missing:
+                    summary: One or more fields are missing
+                    value:
+                      msg: Field {field} is missing
+                      ok: false
+                  horas_acumuladas:
+                    summary: The field horas_acumuladas must be a positive number
+                    value:
+                      msg: horas_acumuladas must be a positive number
+                      ok: false
+                  estado:
+                    summary: The field estado is invalid
+                    value:
+                      msg: estado is invalid
+                      ok: false 
+          '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+                project_missing:
+                  summary: Task does not exist
+                  value:
+                    msg: The task does not exist
+                    ok: false
+    delete:
+      tags:
+        - tasks
+      summary: Delete a specified task
+      description: Deletes an existing task by its ID
+      parameters:
+        - name: project_id
+          in: path
+          description: ID of the project from wich to delete the task
+          required: true
+          schema:
+            type: integer
+            format: int
+        - name: task_id
+          in: path
+          description: ID of the task to delete
+          required: true
+          schema:
+            type: integer
+            format: int
+      responses:
+        '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/SuccessMessage'
+                examples:
+                  task_deleted:
+                    summary: A message stating the deletion was successful
+                    value:
+                      msg: The task has been deleted successfully
+                      ok: true
+        '404':
+          description: NOT FOUND
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ErrorMessage'
+              examples:
+                project_missing:
+                  summary: Project does not exist
+                  value:
+                    msg: The project does not exist
+                    ok: false
+                project_missing:
+                  summary: Task does not exist
+                  value:
+                    msg: The task does not exist
+                    ok: false

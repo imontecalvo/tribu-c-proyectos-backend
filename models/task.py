@@ -1,5 +1,4 @@
 from utils.db import db
-import datetime as dt
 
 
 class Task(db.Model):

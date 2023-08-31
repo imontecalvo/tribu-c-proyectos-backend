@@ -10,3 +10,6 @@
 
 ## Deploy
 - URL: https://tribu-c-proyectos-backend.onrender.com/
+
+## Swagger API Docs
+- URL: https://tribu-c-proyectos-backend.onrender.com/api/docs
